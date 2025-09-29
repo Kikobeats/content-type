@@ -3,10 +3,7 @@
   "description": "A fast way to get the content type from the input string.",
   "homepage": "https://github.com/kikobeats/@kikobeats/content-type",
   "version": "0.0.0",
-  "main": "./src/index.js",
-  "exports": {
-    ".": "./src/index.js"
-  },
+  "main": "src/index.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
     "name": "Kiko Beats",

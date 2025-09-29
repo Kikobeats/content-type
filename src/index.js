@@ -8,10 +8,30 @@
 const TYPE_REGEXP = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
 
 module.exports = (input, { strict = false } = {}) => {
+  // Handle non-string inputs
+  if (typeof input !== 'string') {
+    return null
+  }
+
+  // Handle empty string
+  if (input === '') {
+    return null
+  }
+
+  // Extract the media type part (before semicolon)
+  const mediaType = input.split(';')[0].trim().toLowerCase()
+
+  // Always validate the basic media type format
+  if (!TYPE_REGEXP.test(mediaType)) {
+    return null
+  }
+
   if (strict) {
-    if (!input || !TYPE_REGEXP.test(input)) {
+    // In strict mode, also validate the full input (no parameters allowed)
+    if (!TYPE_REGEXP.test(input)) {
       return null
     }
   }
-  return input?.split(';')[0].trim().toLowerCase()
+
+  return mediaType
 }

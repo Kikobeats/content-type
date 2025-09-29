@@ -2,7 +2,7 @@
 
 const test = require('ava')
 
-const contentType = require('@kikobeats/content-type')
+const contentType = require('..')
 
 // Invalid types for testing error cases
 const invalidTypes = [
@@ -29,18 +29,18 @@ test('parse with suffix', t => {
 })
 
 test('parse basic type with surrounding OWS', t => {
-  // Whitespace around content type makes it invalid per RFC 7231
-  t.is(contentType(' text/html '), null)
+  // In non-strict mode, whitespace is trimmed
+  t.is(contentType(' text/html '), 'text/html')
 })
 
 test('parse parameters', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html; charset=utf-8; foo=bar'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html; charset=utf-8; foo=bar'), 'text/html')
 })
 
 test('parse parameters with extra LWS', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html ; charset=utf-8 ; foo=bar'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html ; charset=utf-8 ; foo=bar'), 'text/html')
 })
 
 test('should lower-case type', t => {
@@ -48,24 +48,24 @@ test('should lower-case type', t => {
 })
 
 test('should handle quoted parameter values', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html; charset="UTF-8"'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html; charset="UTF-8"'), 'text/html')
 })
 
 test('should handle parameter values with escapes', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html; charset = "UT\\F-\\\\\\"8\\""'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html; charset = "UT\\F-\\\\\\"8\\""'), 'text/html')
 })
 
 test('should handle balanced quotes', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html; param="charset=\\"utf-8\\"; foo=bar"; bar=foo'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html; param="charset=\\"utf-8\\"; foo=bar"; bar=foo'), 'text/html')
 })
 
-// Test invalid types - these should return null
+// Test invalid types - these should return null even in non-strict mode
 invalidTypes.forEach(type => {
   test(`should handle invalid media type: ${type}`, t => {
-    // Invalid media types should return null with regex validation
+    // Invalid media types should return null even in non-strict mode
     const result = contentType(type)
     t.is(result, null)
   })
@@ -99,16 +99,16 @@ test('should handle object with getHeader method', t => {
 
 // Additional edge case tests
 test('should handle content type with multiple parameters', t => {
-  // Parameters make the string invalid for the strict regex
-  t.is(contentType('text/html; charset=utf-8; boundary=something; foo=bar'), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html; charset=utf-8; boundary=something; foo=bar'), 'text/html')
 })
 
 test('should handle content type with whitespace variations', t => {
-  // All of these have parameters, making them invalid for the strict regex
-  t.is(contentType('text/html;charset=utf-8'), null)
-  t.is(contentType('text/html ;charset=utf-8'), null)
-  t.is(contentType('text/html; charset=utf-8'), null)
-  t.is(contentType('text/html  ;  charset=utf-8  '), null)
+  // In non-strict mode, parameters are stripped
+  t.is(contentType('text/html;charset=utf-8'), 'text/html')
+  t.is(contentType('text/html ;charset=utf-8'), 'text/html')
+  t.is(contentType('text/html; charset=utf-8'), 'text/html')
+  t.is(contentType('text/html  ;  charset=utf-8  '), 'text/html')
 })
 
 test('should handle mixed case content types', t => {
@@ -130,9 +130,9 @@ test('should handle content type with no parameters', t => {
 })
 
 test('should handle content type with semicolon but no parameters', t => {
-  // Semicolons make the string invalid for the strict regex
-  t.is(contentType('text/html;'), null)
-  t.is(contentType('text/html; '), null)
+  // In non-strict mode, semicolons are stripped
+  t.is(contentType('text/html;'), 'text/html')
+  t.is(contentType('text/html; '), 'text/html')
 })
 
 test('should handle numeric inputs gracefully', t => {
@@ -149,10 +149,9 @@ test('should handle boolean inputs gracefully', t => {
 })
 
 test('should handle array inputs gracefully', t => {
-  // Arrays may cause errors due to .split() call, so we test for that
+  // Non-string inputs return null
   t.is(contentType([]), null)
-  // This specific array might cause an error due to implementation details
-  t.throws(() => contentType(['text/html']))
+  t.is(contentType(['text/html']), null)
 })
 
 test('should handle function inputs gracefully', t => {
