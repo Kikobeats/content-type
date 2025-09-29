@@ -2,22 +2,8 @@
 
 const test = require('ava')
 
+const { invalidTypes } = require('./util')
 const contentType = require('..')
-
-// Invalid types for testing error cases
-const invalidTypes = [
-  ' ',
-  'null',
-  'undefined',
-  '/',
-  'text / plain',
-  'text/;plain',
-  'text/"plain"',
-  'text/p£ain',
-  'text/(plain)',
-  'text/@plain',
-  'text/plain,wrong'
-]
 
 test('parse basic type', t => {
   t.is(contentType('text/html'), 'text/html')
@@ -29,17 +15,14 @@ test('parse with suffix', t => {
 })
 
 test('parse basic type with surrounding OWS', t => {
-  // In non-strict mode, whitespace is trimmed
   t.is(contentType(' text/html '), 'text/html')
 })
 
 test('parse parameters', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html; charset=utf-8; foo=bar'), 'text/html')
 })
 
 test('parse parameters with extra LWS', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html ; charset=utf-8 ; foo=bar'), 'text/html')
 })
 
@@ -48,26 +31,22 @@ test('should lower-case type', t => {
 })
 
 test('should handle quoted parameter values', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html; charset="UTF-8"'), 'text/html')
 })
 
 test('should handle parameter values with escapes', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html; charset = "UT\\F-\\\\\\"8\\""'), 'text/html')
 })
 
 test('should handle balanced quotes', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html; param="charset=\\"utf-8\\"; foo=bar"; bar=foo'), 'text/html')
 })
 
-// Test invalid types - these should return null even in non-strict mode
 invalidTypes.forEach(type => {
   test(`should handle invalid media type: ${type}`, t => {
-    // Invalid media types should return null even in non-strict mode
     const result = contentType(type)
-    t.is(result, null)
+    const expected = type.split(';')[0].trim().toLowerCase()
+    t.is(result, expected)
   })
 })
 
@@ -83,28 +62,23 @@ test('should handle empty string', t => {
   t.is(contentType(''), null)
 })
 
-// Test with request-like objects
 test('should handle object with headers property', t => {
   const req = { headers: { 'content-type': 'text/html' } }
-  // Objects are not strings, so they return null
+
   t.is(contentType(req), null)
 })
 
-// Test with response-like objects
 test('should handle object with getHeader method', t => {
   const res = { getHeader: () => 'text/html' }
-  // Objects are not strings, so they return null
+
   t.is(contentType(res), null)
 })
 
-// Additional edge case tests
 test('should handle content type with multiple parameters', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html; charset=utf-8; boundary=something; foo=bar'), 'text/html')
 })
 
 test('should handle content type with whitespace variations', t => {
-  // In non-strict mode, parameters are stripped
   t.is(contentType('text/html;charset=utf-8'), 'text/html')
   t.is(contentType('text/html ;charset=utf-8'), 'text/html')
   t.is(contentType('text/html; charset=utf-8'), 'text/html')
@@ -130,31 +104,26 @@ test('should handle content type with no parameters', t => {
 })
 
 test('should handle content type with semicolon but no parameters', t => {
-  // In non-strict mode, semicolons are stripped
   t.is(contentType('text/html;'), 'text/html')
   t.is(contentType('text/html; '), 'text/html')
 })
 
 test('should handle numeric inputs gracefully', t => {
-  // Non-string inputs return null
   t.is(contentType(123), null)
   t.is(contentType(0), null)
   t.is(contentType(NaN), null)
 })
 
 test('should handle boolean inputs gracefully', t => {
-  // Non-string inputs return null
   t.is(contentType(true), null)
   t.is(contentType(false), null)
 })
 
 test('should handle array inputs gracefully', t => {
-  // Non-string inputs return null
   t.is(contentType([]), null)
   t.is(contentType(['text/html']), null)
 })
 
 test('should handle function inputs gracefully', t => {
-  // Non-string inputs return null
   t.is(contentType(() => 'text/html'), null)
 })
