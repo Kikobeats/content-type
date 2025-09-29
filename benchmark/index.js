@@ -3,7 +3,7 @@
 const contentType = require('content-type')
 const { run, bench } = require('mitata')
 
-const getContentType = require('.')
+const getContentType = require('..')
 
 const testData = [
   'text/html',
