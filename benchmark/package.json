@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@kikobeats/content-type": "workspace:*",
+    "content-type": "latest",
+    "mitata": "latest"
+  }
+}
