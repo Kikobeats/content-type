@@ -59,12 +59,6 @@
     "test": "c8 ava"
   },
   "license": "MIT",
-  "ava": {
-    "files": [
-      "test/**/*.js",
-      "!test/util.js"
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
