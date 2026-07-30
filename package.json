@@ -1,7 +1,7 @@
 {
   "name": "@kikobeats/content-type",
-  "description": "A fast way to get the content type from the input string.",
-  "homepage": "https://github.com/kikobeats/@kikobeats/content-type",
+  "description": "Fast Content-Type parsing for HTTP requests and responses — MIME type helpers aligned with RFC 7231.",
+  "homepage": "https://github.com/Kikobeats/content-type",
   "version": "1.0.4",
   "main": "src/index.js",
   "author": {
@@ -12,14 +12,19 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kikobeats/@kikobeats/content-type.git"
+    "url": "git+https://github.com/Kikobeats/content-type.git"
   },
   "bugs": {
-    "url": "https://github.com/kikobeats/@kikobeats/content-type/issues"
+    "url": "https://github.com/Kikobeats/content-type/issues"
   },
   "keywords": [
+    "charset",
     "content-type",
+    "header",
     "http",
+    "media-type",
+    "mime",
+    "parse",
     "req",
     "res",
     "rfc7231"
