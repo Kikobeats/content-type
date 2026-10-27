@@ -1,23 +1,45 @@
 'use strict'
 
-const test = require('ava')
+const test = require('ava').default
 
 const contentType = require('..')
 
 test('parse basic type', t => {
   t.is(contentType(' text/html ', { strict: true }), 'text/html')
-  t.is(contentType('text/html; charset=utf-8; foo=bar', { strict: true }), 'text/html')
-  t.is(contentType('text/html ; charset=utf-8 ; foo=bar', { strict: true }), 'text/html')
+  t.is(
+    contentType('text/html; charset=utf-8; foo=bar', { strict: true }),
+    'text/html'
+  )
+  t.is(
+    contentType('text/html ; charset=utf-8 ; foo=bar', { strict: true }),
+    'text/html'
+  )
   t.is(contentType('text/html; charset="UTF-8"', { strict: true }), 'text/html')
-  t.is(contentType('text/html; charset = "UT\\F-\\\\\\"8\\""', { strict: true }), 'text/html')
-  t.is(contentType('text/html; param="charset=\\"utf-8\\"; foo=bar"; bar=foo', { strict: true }), 'text/html')
-  t.is(contentType('text/html; charset=utf-8; boundary=something; foo=bar', { strict: true }), 'text/html')
+  t.is(
+    contentType('text/html; charset = "UT\\F-\\\\\\"8\\""', { strict: true }),
+    'text/html'
+  )
+  t.is(
+    contentType('text/html; param="charset=\\"utf-8\\"; foo=bar"; bar=foo', {
+      strict: true
+    }),
+    'text/html'
+  )
+  t.is(
+    contentType('text/html; charset=utf-8; boundary=something; foo=bar', {
+      strict: true
+    }),
+    'text/html'
+  )
   t.is(contentType('text/html;', { strict: true }), 'text/html')
   t.is(contentType('text/html; ', { strict: true }), 'text/html')
   t.is(contentType('text/html;charset=utf-8', { strict: true }), 'text/html')
   t.is(contentType('text/html ;charset=utf-8', { strict: true }), 'text/html')
   t.is(contentType('text/html; charset=utf-8', { strict: true }), 'text/html')
-  t.is(contentType('text/html  ;  charset=utf-8  ', { strict: true }), 'text/html')
+  t.is(
+    contentType('text/html  ;  charset=utf-8  ', { strict: true }),
+    'text/html'
+  )
 })
 
 test('invalid input', t => {
