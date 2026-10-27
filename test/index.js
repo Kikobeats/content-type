@@ -62,3 +62,16 @@ test('non strict mode', t => {
   t.is(contentType('text/@plain'), 'text/@plain')
   t.is(contentType('text/plain,wrong'), 'text/plain,wrong')
 })
+
+test('cut at the first semicolon', t => {
+  t.is(contentType('text/html;;'), 'text/html')
+  t.is(contentType('text/html\t;\tcharset=utf-8'), 'text/html')
+  t.is(contentType('text/html; param="a;b"'), 'text/html')
+  t.is(contentType('text/html, text/plain; q=1'), 'text/html, text/plain')
+})
+
+test('empty type before parameters', t => {
+  t.is(contentType(';charset=utf-8'), '')
+  t.is(contentType(' ; '), '')
+  t.is(contentType('   '), '')
+})
