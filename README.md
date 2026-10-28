@@ -1,8 +1,8 @@
 # @kikobeats/content-type
 
-![Last version](https://img.shields.io/github/tag/kikobeats/@kikobeats/content-type.svg?style=flat-square)
-[![Coverage Status](https://img.shields.io/coveralls/kikobeats/@kikobeats/content-type.svg?style=flat-square)](https://coveralls.io/github/kikobeats/@kikobeats/content-type)
-[![NPM Status](https://img.shields.io/npm/dm/@kikobeats/content-type.svg?style=flat-square)](https://www.npmjs.org/package/@kikobeats/content-type)
+[![Last version](https://img.shields.io/github/v/tag/Kikobeats/content-type?style=flat-square)](https://github.com/Kikobeats/content-type/releases)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Kikobeats/content-type?style=flat-square)](https://coveralls.io/github/Kikobeats/content-type)
+[![NPM Status](https://img.shields.io/npm/dm/@kikobeats/content-type?style=flat-square)](https://www.npmjs.com/package/@kikobeats/content-type)
 
 > A fast way to get the content type from the input string.
 
