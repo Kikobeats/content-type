@@ -64,3 +64,9 @@ test('strict mode', t => {
   t.is(contentType('text/@plain', { strict: true }), null)
   t.is(contentType('text/plain,wrong', { strict: true }), null)
 })
+
+test('empty type before parameters', t => {
+  t.is(contentType(';charset=utf-8', { strict: true }), null)
+  t.is(contentType(' ; ', { strict: true }), null)
+  t.is(contentType('   ', { strict: true }), null)
+})
