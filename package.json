@@ -2,7 +2,7 @@
   "name": "@kikobeats/content-type",
   "description": "Fast Content-Type parsing for HTTP requests and responses — MIME type helpers aligned with RFC 7231.",
   "homepage": "https://github.com/Kikobeats/content-type",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "src/index.js",
   "author": {
     "email": "josefrancisco.verdu@gmail.com",
